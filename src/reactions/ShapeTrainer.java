@@ -43,6 +43,7 @@ public class ShapeTrainer extends Window {
         char c = ke.getKeyChar(); // get typed character
         System.out.println("types: " + c);
         curName = (c==' '||c==0x0D||c==0x0A) ?"":curName+c;  // 0x0D hexadecimal
+        if (c==0x0D||c==0x0A) {Shape.saveShapeDB();}
         setState();
         repaint();
     }
@@ -66,8 +67,8 @@ public class ShapeTrainer extends Window {
                 pList.add(proto);
             }
             setState(); // state is updated
-            repaint();
         }
+        repaint();
     }
     public void mouseDragged(MouseEvent me){Ink.BUFFER.drag(me.getX(), me.getY());repaint();}
     public static void main(String[] args) {PANEL = new ShapeTrainer(); Window.launch();}
