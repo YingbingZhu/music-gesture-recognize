@@ -1,6 +1,7 @@
 package graphics;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,29 +20,30 @@ public class G {
     }
 
 
-    public static class V{
+    public static class V implements Serializable {
         public static Transform T  = new Transform(); // get the dx, dy ....
         public int x, y;
 
         public V(int x, int y){set(x, y);}
         public V(V v){set(v.x, v.y);}
         public void set(int x, int y){this.x=x; this.y=y;}
+        public void blend(V v, int k){set((k*x + v.x)/(k+1), (k*y + v.y)/(k+1));}
         public void set(V v){x = v.x; y = v.y;}
         public void setT(V v){set(v.tx(), v.ty());} // transform V
-        public int tx(){return x * T.n/T.d + T.dx;} // translate x
-        public int ty(){return y * T.n/T.d + T.dy;} // translate y
+        public int tx(){return x*T.n/T.d + T.dx;} // translate x
+        public int ty(){return y*T.n/T.d + T.dy;} // translate y
         public void add(V v){x += v.x; y += v.y;} // add a vector to another one
-        public static class Transform{
+        public static class Transform implements Serializable{
             int dx, dy, n, d;  // dx & dy how much to translate
             public void set(VS oVS, VS nVS){
                 setScale(oVS.size.x, oVS.size.y, nVS.size.x, nVS.size.y);
-                dx = setOff(oVS.loc.x, oVS.size.x, nVS.loc.x, nVS.loc.x);
-                dy = setOff(oVS.loc.y, oVS.size.y, nVS.loc.y, nVS.loc.y);
+                dx = setOff(oVS.loc.x, oVS.size.x, nVS.loc.x, nVS.size.x);
+                dy = setOff(oVS.loc.y, oVS.size.y, nVS.loc.y, nVS.size.y);
             }
             public void set(BBox from, VS to){
                 setScale(from.h.size(), from.v.size(), to.size.x, to.size.y);
-                dx = setOff(from.h.lo, from.h.size(), to.loc.x, to.loc.x);
-                dy = setOff(from.v.lo, from.v.size(), to.loc.y, to.loc.y);
+                dx = setOff(from.h.lo, from.h.size(), to.loc.x, to.size.x);
+                dy = setOff(from.v.lo, from.v.size(), to.loc.y, to.size.y);
             }
 
             public void setScale(int oW, int oH, int nW, int nH){
@@ -53,7 +55,7 @@ public class G {
     }; //point
 
     // ---------------------------- VS ----------------------------------------//
-    public static class VS{
+    public static class VS implements Serializable{
         public V loc, size;
         public VS(int x, int y, int w, int h){loc = new V(x, y); size = new V(w, h);}
         public void fill(Graphics g, Color c){g.setColor(c);g.fillRect(loc.x, loc.y, size.x, size.y);}
@@ -80,7 +82,7 @@ public class G {
         public void draw(Graphics g){g.drawRect(h.lo, v.lo, h.size(), v.size());}
     };
     // ----------------------------PL ----------------------------------------//
-    public static class Pl{  // path
+    public static class Pl implements Serializable{  // path
         public V[] points;
         public Pl(int n){
             points = new V[n]; // allocate the array

@@ -4,18 +4,24 @@ import music.I;
 import music.UC;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Ink extends G.Pl implements I.Show {
+public class Ink extends G.Pl implements I.Show, Serializable {
     public static Buffer BUFFER = new Buffer();
+    public Norm norm;
+    public G.VS vs;
     public static G.VS TEMP = new G.VS(100, 100, 100, 100);
     public Ink(){
-        super(UC.normSampleSize); // sub-sample buffer
-        Ink.BUFFER.subSample(this);
-        G.V.T.set(BUFFER.bbox, TEMP);
-        transform();
-        G.V.T.set(TEMP, BUFFER.bbox.getNewVS());
-        transform();
+        super(BUFFER.n);
+        norm = new Norm(); /// take from buffer and make it into a normalized
+        vs = BUFFER.bbox.getNewVS();
+//        super(UC.normSampleSize); // sub-sample buffer
+//        Ink.BUFFER.subSample(this);
+//        G.V.T.set(BUFFER.bbox, TEMP);
+//        transform();
+//        G.V.T.set(TEMP, BUFFER.bbox.getNewVS());
+//        transform();
 //        super(BUFFER.n);
 //        System.out.println("buffer cnt:" + BUFFER.n);
 //        for(int i=0;i<BUFFER.n;i++){
@@ -25,7 +31,8 @@ public class Ink extends G.Pl implements I.Show {
 
     @Override
     public void show(Graphics g) {
-       this.draw(g);
+       g.setColor(UC.InkColor);
+       norm.drawAt(g, vs);
     }
     // --------------------------- Buffer ------------------------
     public static class Buffer extends G.Pl implements I.Show, I.Area{
@@ -67,7 +74,7 @@ public class Ink extends G.Pl implements I.Show {
     }
 
     // ------------------------ Norm --------------
-    public static class Norm extends G.Pl{
+    public static class Norm extends G.Pl implements Serializable{
         public static final int N = UC.normSampleSize, MAX = UC.maxNormCoordinate;
 
         public static final G.VS NCS = new G.VS(0, 0, MAX, MAX); // normalized coordinates
@@ -77,6 +84,22 @@ public class Ink extends G.Pl implements I.Show {
             BUFFER.subSample(this);
             G.V.T.set(BUFFER.bbox, NCS); // transform
             transform(); // transform of points
+        }
+
+        public int dist(Norm n) {
+            int res = 0;
+            for (int i = 0; i < N; i++) {
+                int dx = points[i].x - n.points[i].x;   // this.points
+                int dy = points[i].y - n.points[i].y;
+                res += dx * dx + dy * dy;
+            }
+            return res;
+        }
+
+        public void blend(Norm norm, int nBlend){
+            for (int i = 0; i < N; i++) {
+                points[i].blend(norm.points[i], nBlend); // nBlend how many to blend together
+            }
         }
 
         public void drawAt(Graphics g, G.VS vs) {
