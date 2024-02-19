@@ -21,14 +21,13 @@ public class ShapeTrainer extends Window {
 
     public void setState(){
         // stub
-        curState = (curName.equals("")||curName.equals("DOT")) ? ILLEGAL:UNKNOWN;
+        curState = !Shape.Database.isLegal(curName) ? ILLEGAL:UNKNOWN;
         if (curState == UNKNOWN) {
             if (Shape.DB.containsKey(curName)) {
                 curState = KNOWN;
                 pList = Shape.DB.get(curName).prototypes;
             } else {pList = null;}
         }
-
     }
     public void paintComponent(Graphics g){
         G.fillBack(g, Color.white);
@@ -43,31 +42,25 @@ public class ShapeTrainer extends Window {
         char c = ke.getKeyChar(); // get typed character
         System.out.println("types: " + c);
         curName = (c==' '||c==0x0D||c==0x0A) ?"":curName+c;  // 0x0D hexadecimal
-        if (c==0x0D||c==0x0A) {Shape.saveShapeDB();}
+        if (c==0x0D||c==0x0A) {Shape.Database.save();}
         setState();
         repaint();
     }
 
     public void mousePressed(MouseEvent me){Ink.BUFFER.dn(me.getX(), me.getY());repaint();}
     public void mouseReleased(MouseEvent me){
-        if (curState != ILLEGAL){
-            Ink ink = new Ink();
-            Shape.Prototype proto;
-            if(pList == null){
-                Shape s = new Shape(curName);
-                Shape.DB.put(curName, s);
-                pList = s.prototypes;
+        int H = Shape.Prototype.List.showBoxHeight;  // m+w
+        if (me.getY() < H){ // if click on top show box, no train
+            int index = me.getX() / H; // which box
+            if (pList != null && index < pList.size()){
+                pList.remove(index);
             }
-
-            if (pList.bestDist(ink.norm) < UC.noMatchDistance){
-                proto = Shape.Prototype.List.bestMatch;
-                proto.blend(ink.norm);
-            } else {
-                proto = new Shape.Prototype();
-                pList.add(proto);
-            }
-            setState(); // state is updated
+            repaint();
+            return;
         }
+        Ink ink = new Ink();
+        Shape.DB.train(curName, ink.norm);
+        setState();
         repaint();
     }
     public void mouseDragged(MouseEvent me){Ink.BUFFER.drag(me.getX(), me.getY());repaint();}

@@ -28,7 +28,6 @@ public class Ink extends G.Pl implements I.Show, Serializable {
 //            points[i].set(BUFFER.points[i]);
 //        }
     }
-
     @Override
     public void show(Graphics g) {
        g.setColor(UC.InkColor);
@@ -43,7 +42,7 @@ public class Ink extends G.Pl implements I.Show, Serializable {
         public void clear(){n=0;}
         public void add(int x, int y){if(n < MAX){points[n++].set(x, y);bbox.add(x, y);}} // after operation, n++
         @Override
-        public void show(Graphics g) {this.drawN(g, n);bbox.draw(g);}
+        public void show(Graphics g) {this.drawN(g, n);}
         @Override
         public boolean hit(int x, int y) {return true;}
         @Override

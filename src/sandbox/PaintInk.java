@@ -11,7 +11,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class PaintInk extends Window {
+    public static String recognized = ""; // change when draw something
     public static Ink.List inkList = new Ink.List();
+
     public static Shape.Prototype.List pList = new Shape.Prototype.List();
 //    static{inkList.add(new Ink());};  stub:to-do
     public PaintInk() {
@@ -31,11 +33,13 @@ public class PaintInk extends Window {
             g.drawString("Dist: " + dist, 600, 60);
         }
         pList.show(g);
-
+        g.drawString(recognized, 700, 40);
     }
     public void mousePressed(MouseEvent me){Ink.BUFFER.dn(me.getX(), me.getY());repaint();}
     public void mouseReleased(MouseEvent me){
         Ink ink = new Ink();
+        Shape s = Shape.recognize(ink);
+        recognized = "Recognized: " + (s != null ? s.name : "UNRECOGNIZED!");
         Shape.Prototype proto;
         inkList.add(ink);
         if (pList.bestDist(ink.norm) < UC.noMatchDistance){

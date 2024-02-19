@@ -61,6 +61,13 @@ public class G {
         public void fill(Graphics g, Color c){g.setColor(c);g.fillRect(loc.x, loc.y, size.x, size.y);}
         // hit detection
         public boolean hit(int x, int y){return loc.x <= x && loc.y <= y && x <= (loc.x + size.x) && y <= (loc.y + size.y);}
+        public int xL() {return loc.x;}
+        public int xM() {return loc.x + size.x/2;}
+        public int xH() {return loc.x + size.x;}
+        public int yL() {return loc.y;}
+        public int yM() {return loc.y + size.y/2;}
+        public int yH() {return loc.y + size.y;}
+
     };
     // ----------------------------LoHi ----------------------------------------//
     public static class LoHi{   //range
