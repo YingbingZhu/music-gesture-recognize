@@ -4,6 +4,7 @@ import music.I;
 import java.awt.*;
 
 public abstract class Mass extends Reaction.List implements I.Show {
+    public static int massId = 1;
     public Layer layer;
     public Mass(String layerName){
         layer = Layer.byName.get(layerName);
@@ -12,6 +13,10 @@ public abstract class Mass extends Reaction.List implements I.Show {
             System.out.println("Bad layer name: " + layerName);
         }
     }
+    // fix bug in arraylist remove, assign id
+    public int hashcode = massId++;
+    public boolean equals(Object o){return this == o;}
+    public int hashcode() {return hashcode;}
 
     public void delete(){
         clearAll(); // clear all the reactions from the list, shape map

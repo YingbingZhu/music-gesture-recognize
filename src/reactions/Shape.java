@@ -119,6 +119,11 @@ public class Shape implements Serializable {
             int d = s.prototypes.bestDist(ink.norm);
             if (d < bestSoFar){bestMatch = s; bestSoFar = d;}
         }
+        if (bestMatch != null) {
+            System.out.println("Recognized: " + bestMatch.name);
+        } else {
+            System.out.println("No");
+        }
         return bestMatch;
     } // stub
 
