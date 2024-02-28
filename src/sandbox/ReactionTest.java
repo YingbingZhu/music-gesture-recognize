@@ -55,7 +55,7 @@ public class ReactionTest extends Window {
                     }
                 }
                 public void act(Gesture gesture) {
-                    Box.this.delete();  // delete in Mass class
+                    Box.this.deleteMass();  // delete in Mass class
                 }
             });
         }

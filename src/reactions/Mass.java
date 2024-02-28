@@ -18,7 +18,7 @@ public abstract class Mass extends Reaction.List implements I.Show {
     public boolean equals(Object o){return this == o;}
     public int hashcode() {return hashcode;}
 
-    public void delete(){
+    public void deleteMass(){
         clearAll(); // clear all the reactions from the list, shape map
         layer.remove(this); // remove mass from layer
     }
