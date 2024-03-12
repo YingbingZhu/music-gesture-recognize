@@ -43,10 +43,27 @@ public class Head extends Mass implements Comparable<Head>{
                 else {t.unStemHeads(y1, y2);}
             }
         });
+        addReaction(new Reaction("DOT") {
+            public int bid(Gesture g) {
+                int xH = Head.this.x(), yH = Head.this.y(), h = Head.this.staff.H(), w = Head.this.W();
+                int x = g.vs.xM(), y = g.vs.yM();
+                if (x < xH || x > xH + 2*w || y < yH - h || y > yH + h) {return UC.noBid;}
+                return Math.abs(xH + w - x) + Math.abs(yH - y);
+            }
+            public void act(Gesture g) {
+                if (Head.this.stem != null) {Head.this.stem.cycleDot();}
+            }
+        });
     }
     public void show(Graphics g){
         int H = staff.H();
         (forcedGlyph != null?forcedGlyph: normalGlyph()).showAt(g, H, x(), staff.yLine(line));
+        if (stem != null) {
+            int off = UC.gapRestToFirstDot, sp = UC.gapBetweenAugDot;
+            for (int i = 0; i < stem.nDot; i++){
+                g.fillOval(time.x + off + i*sp, y() - 3*H/2, H*2/3, H*2/3);
+            }
+        }
     }
     public int x(){
         int res = time.x;
@@ -83,7 +100,8 @@ public class Head extends Mass implements Comparable<Head>{
 
     @Override
     public int compareTo(Head h) {
-        return line - h.line; // > 0: first one is bigger
+        // return line - h.line; // > 0: first one is bigger
+        return (staff.iStaff != h.staff.iStaff)? staff.iStaff - h.staff.iStaff:line - h.line;
     }
 
     // -------------------- List --------------------

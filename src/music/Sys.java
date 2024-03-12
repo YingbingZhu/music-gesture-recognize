@@ -6,6 +6,7 @@ import reactions.Mass;
 import static music.Editor.PAGE;
 
 public class Sys extends Mass {
+  public Stem.List stems = new Stem.List();
   public Time.List times;
   public ArrayList<Staff> staffs = new ArrayList<>();
   public Page page = PAGE;

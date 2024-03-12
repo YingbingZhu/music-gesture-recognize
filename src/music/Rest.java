@@ -51,7 +51,7 @@ public class Rest extends Duration{
         if (nFlag ==  2){Glyph.REST_2F.showAt(g, H, time.x, y);}
         if (nFlag ==  3){Glyph.REST_3F.showAt(g, H, time.x, y);}
         if (nFlag ==  4){Glyph.REST_4F.showAt(g, H, time.x, y);}
-        int xO = 26, sp = 10;
+        int xO = UC.gapRestToFirstDot, sp = UC.gapBetweenAugDot;
         for (int i = 0; i < nDot; i++){g.fillOval(time.x + xO + i*sp, y - 3*H/2, H*2/3, H*2/3);}
     }
 }
