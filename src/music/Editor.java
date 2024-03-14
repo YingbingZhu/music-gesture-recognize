@@ -39,6 +39,15 @@ public class Editor extends Window {
 //            g.setColor(Color.RED);
 //            g.drawRect(200, PAGE.margins.top + 3*H, 24*H/10, 2*H);
         }
+//        g.setColor(Color.orange);
+//        Beam.setPoly(100, 100+G.rnd(100), 200, 100+G.rnd(100), 8);
+//        g.fillPolygon(Beam.poly);
+//        int h = 8, x1 = 100, x2 = 200;
+//        g.setColor(Color.blue);
+//        Beam.setMasterBeam(x1, 100+G.rnd(100), x2, 100+G.rnd(100));
+//        Beam.drawBeamStack(g, 0, 1, x1, x2, h);
+//        g.setColor(Color.orange);
+//        Beam.drawBeamStack(g, 1, 3, x1+10, x2-10, h);
     }
     public void mousePressed(MouseEvent me){
         Gesture.AREA.dn(me.getX(), me.getY()); repaint();}

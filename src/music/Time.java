@@ -11,16 +11,16 @@ public class Time {
             if (y>y1 && y<y2) {h.unStem();}
         }
     }
-    public void stemHeads(Staff staff, Boolean up, int y1, int y2){
-        Stem s = new Stem(staff, up);
-        for (Head h:heads){
-            int y = h.y();
-            if (y > y1 && y < y2){h.joinStem(s);}
-        }
-        if (s.heads.size() == 0){
-            System.out.println("WTF ! Empty head list");
-        } else {s.setWrongSide();}
-    }
+//    public void stemHeads(Staff staff, Boolean up, int y1, int y2){
+//        Stem s = new Stem(staff, up);
+//        for (Head h:heads){
+//            int y = h.y();
+//            if (y > y1 && y < y2){h.joinStem(s);}
+//        }
+//        if (s.heads.size() == 0){
+//            System.out.println("WTF ! Empty head list");
+//        } else {s.setWrongSide();}
+//    }
     // -------------------- List ------------------------
     public static class List extends ArrayList<Time>{
         public Sys sys;

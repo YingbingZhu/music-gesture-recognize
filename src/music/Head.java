@@ -39,7 +39,9 @@ public class Head extends Mass implements Comparable<Head>{
                 int w = Head.this.W();
                 Boolean up = (x > t.x + w/2);
                 // have stem, do a stem gesture, if no stem, add stem on it
-                if (Head.this.stem == null){t.stemHeads(staff, up, y1, y2);}
+                if (Head.this.stem == null){
+                    Stem.getStem(staff, t, y1, y2, up);
+                }
                 else {t.unStemHeads(y1, y2);}
             }
         });
