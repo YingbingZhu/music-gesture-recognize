@@ -23,6 +23,16 @@ public class Sys extends Mass {
     this.iSys = iSys;
     for(int i = 0; i<sysFmt.size(); i++){staffs.add(new Staff(this, i, fmt.get(i)));}
     times = new Time.List(this);
+    addReaction(new Reaction("DOT") { // test splines
+      @Override
+      public int bid(Gesture gesture) {
+        return 0;
+      }
+      @Override
+      public void act(Gesture gesture) {
+        Spline spline = new Spline();
+      }
+    });
     addReaction(new Reaction("E-E") { // beam stems
       @Override
       public int bid(Gesture g) {
